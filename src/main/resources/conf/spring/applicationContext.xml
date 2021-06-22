@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+
+
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<context:component-scan base-package="ph.sinonet.vg.live" />
+
+	<bean class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg>
+			<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+				<property name="config">
+					<bean id="environmentVariablesConfiguration" class="ph.sinonet.vg.live.utils.SpecialEnvironmentStringPBEConfig" />
+				</property>
+			</bean>
+		</constructor-arg>
+		<property name="locations" ref="myProps"/>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+	
+	<bean id="props" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations" ref="myProps"/>
+	</bean>
+
+	<util:set id="myProps">
+		<value>classpath:/conf/properties/om.properties</value>
+		<value>classpath:/project.properties</value>
+	</util:set>
+
+	<import resource="classpath:/conf/spring/applicationContext-db-base.xml" />
+	<import resource="classpath:/conf/spring/applicationContext-db.xml" />
+<!-- 	<import resource="classpath:/conf/spring/applicationContext-db-bisystem.xml" /> -->
+
+	<!-- <import resource="applicationContext-db.xml" /> -->
+</beans>

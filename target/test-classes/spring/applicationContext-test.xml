@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+	 ">
+
+	<context:component-scan base-package="ph.sinonet.vg.live.service" />
+	<context:component-scan base-package="ph.sinonet.vg.live.dao" />
+
+	<bean id="environmentVariablesConfiguration" class="ph.sinonet.vg.live.util.SpecialEnvironmentStringPBEConfig">
+		<property name="algorithm" value="PBEWithMD5AndDES" />
+		<property name="password" value="ComoneBaby" />
+	</bean>
+
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariablesConfiguration" />
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="locations">
+			<list>
+				<value>classpath:/properties/test.properties</value>
+				<value>classpath:/ph/sinonet/vg/core/conf/properties/jms-dest.properties
+				</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<bean class="ph.sinonet.vg.live.constants.PropertyContext" init-method="initPropertySet" />
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" dependency-check="none">
+		<property name="driverClass">
+			<value>${datasource.driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${datasource.url}</value>
+		</property>
+		<property name="user">
+			<value>${datasource.username}</value>
+		</property>
+		<property name="password">
+			<value>${datasource.password}</value>
+		</property>
+		<property name="acquireIncrement" value="3" />
+		<property name="initialPoolSize" value="3" />
+		<property name="minPoolSize" value="2" />
+		<property name="maxPoolSize" value="20" />
+		<property name="maxIdleTime" value="300" />
+		<property name="idleConnectionTestPeriod" value="90" />
+		<property name="maxStatements" value="100" />
+		<property name="numHelperThreads" value="10" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLInnoDBDialect
+				</prop>
+				<!-- <prop key="hibernate.show_sql"> ${hibernate.show_sql} </prop> -->
+				<prop key="hibernate.jdbc.fetch_size">
+					50
+				</prop>
+				<prop key="hibernate.jdbc.batch_size">
+					25
+				</prop>
+				<prop key="hibernate.hbm2ddl.auto">
+					create-drop
+				</prop>
+			</props>
+		</property>
+		<property name="packagesToScan" value="ph.sinonet.vg.live.model.oplive" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- the transactional advice -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- all methods starting with get are read-only -->
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<!-- other methods will get the default transaction settings -->
+			<tx:method name="*" rollback-for="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="allservices" expression="execution(* ph.sinonet.vg.live.bussiness.service.interfaces.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allservices" />
+	</aop:config>
+
+	<!-- <import resource="classpath:/conf/spring/applicationContext-socket-live-server.xml" /> <import resource="classpath:/conf/spring/applicationContext-jms.xml" 
+		/> -->
+
+</beans>

@@ -1,0 +1,58 @@
+/* CSS Document BISYSTEM*/
+body {margin:auto;  font-size:12px; background:#b6d9e4;}
+.form {margin:0px;}
+
+div#container
+{
+    text-align: center;
+}
+div#container table
+{
+    margin: 0 auto;
+    text-align: left;
+}
+
+
+#excel_top {margin:auto; background:url(../images/excel_02.gif) repeat-x; text-align:left; height:90px;}
+#excel_top01 {height:90px; background:url(../images/excel_01.gif) no-repeat left; width:100%;}
+#excel_top02 {width:300px; float:right; text-align:right; color:#FFFFFF; font-size:12px; margin:5px;}
+a {font-size:12px; color:#FFFFFF;}
+a:hover {color:#FFFF00;}
+
+#excel_menu {margin:0; background:url(../images/excel_03.gif) repeat-x; height:27px; font-size:12px; text-align:right; padding-right:3px; vertical-align: middle;}
+#excel_menu_left {margin:0; background:url(../images/excel_03.gif) repeat-x; height:27px; font-size:12px; text-align:left; padding-left:3px; vertical-align: middle;}
+.select01 {width:180px; height:20px; margin:2px;}
+.input {width:70px; height:15px; margin:2px; font-size:12px; line-height:18px;}
+.submit {width:42px; height:19px; border:none; background:url(../images/excel_06.gif) no-repeat; margin:2px;}
+
+#middle {margin:auto;}
+
+
+#right {margin:0; background:#b6d9e4 url(../images/excel_17.gif) repeat-x;}
+#right_01 {margin:0; background:url(../images/excel_19.gif) left repeat-y;}
+#right_001 {margin:0; background:url(../images/excel_25.gif) right repeat-y; text-align:left;}
+#right_002 {margin:0; background:url(../images/excel_25.gif) right repeat-y; text-align:right;}
+#right_02 {margin:0; background:url(../images/excel_11.gif) no-repeat;}
+#right_03 {margin:0; text-align:right;}
+#right_04 {margin:0; width:100%;}
+.text_01 {line-height:14px;}
+.text_02 {line-height:14px; color:#FFFFFF; font-weight:bold;}
+td {padding:5px;align:center;}
+#right_04 a {color:#000099;}
+#right_04 a:hover {color:#FF0000;}
+.submit02 {width:35px; height:18px; border:none; background:url(../images/excel_24.gif) no-repeat; margin:2px;}
+#right_05 {margin:auto;}
+#right_05 a {display:block; width:110px; height:24px; background:url(../images/excel_34.gif) no-repeat; text-indent:0px; font-size:12px; line-height:26px; text-align:center; color:#050072; text-decoration:none; padding-top:2px;}
+#right_05 a:hover {display:block; width:110px; height:26px; background:url(../images/excel_36.gif) no-repeat; text-indent:0px; font-size:12px; line-height:26px; color:#FF3300; text-align:center;}
+#aaa {float:left; width:110px; height:22px; background:url(../images/excel_35.gif) no-repeat; line-height:26px; text-align:center; padding-top:4px;}
+#bbb {float:left; width:110px; height:26px; background:url(../images/excel_35.gif) no-repeat; line-height:26px;}
+#ccc {float:left; width:110px; height:26px; background:url(../images/excel_35.gif) no-repeat; line-height:26px;}
+#right_06 {margin:25px auto auto auto; border:1px solid #99c8d7; background:#FFFFFF; text-align:center; padding:10px;}
+.wwctrl{
+    color:red;
+}
+.wwgrp{
+    color:red;
+}
+
+#text-long {width:420px;}

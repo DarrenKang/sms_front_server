@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"  "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.action.extension" value="do" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<constant name="struts.devMode" value="false" />
+	
+	<package name="api-default" extends="struts-default">
+		<!--<interceptors>
+			<interceptor name="authorizationInterceptor" class="authorizationInterceptor"></interceptor>
+			<interceptor-stack name="defaultStack">
+				<interceptor-ref name="authorizationInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		&lt;!&ndash;默认的拦截器 &ndash;&gt;
+		<default-interceptor-ref name="defaultStack"></default-interceptor-ref>-->
+		
+		<action name="sendSms" class="smsAction" method="sendSms">
+			<result type="plainText"></result>
+		</action>
+		
+		<action name="sendSmsForChannelTwo" class="smsAction" method="sendSmsForChannelTwo">
+			<result type="plainText"></result>
+		</action>
+		<!--  for testing off saving sms transaction	-->
+		<!--<action name="testSave" class="smsAction" method="testsavemessage">
+			<result type="plainText"></result>
+		</action>-->
+		
+	</package>
+
+	<package name="smsApi" namespace="/office" extends="struts-default">
+		<!-- smsConfigAction -->
+		<!-- query sms config by project/product -->
+		<action name="querySmsConfigByProject" class="smsConfigAction"
+				method="querySmsConfigByProject">
+			<result name="input">/office/setSmsConfig.jsp</result>
+		</action>
+		<action name="addSmsConfig" class="smsConfigAction" method="addSmsConfig">
+			<result name="input">/office/setSmsConfig.jsp</result>
+		</action>
+		<action name="deleteSmsConfig" class="smsConfigAction" method="deleteSmsConfig">
+			<result name="input" type="chain">querySmsConfigByProject</result>
+		</action>
+
+		<action name="deleteSmsConfigProduct" class="smsConfigAction" method="deleteSmsConfig">
+			<result name="input" type="chain">querySmsConfigByProjectProduct</result>
+		</action>
+
+		<action name="updateSmsConfig" class="smsConfigAction" method="updateSmsConfig">
+			<result name="input" type="chain">querySmsConfigByProject</result>
+		</action>
+
+		<action name="updateSmsConfigProduct" class="smsConfigAction" method="updateSmsConfig">
+			<result name="input" type="chain">querySmsConfigByProjectProduct</result>
+		</action>
+
+		<action name="enableConfig" class="smsConfigAction" method="enableConfig">
+			<result name="input" type="chain">querySmsConfigByProject</result>
+		</action>
+		<action name="enableConfigProduct" class="smsConfigAction" method="enableConfig">
+			<result name="input" type="chain">querySmsConfigByProjectProduct</result>
+		</action>
+
+		<action name="disableConfig" class="smsConfigAction" method="disableConfig">
+			<result name="input" type="chain">querySmsConfigByProject</result>
+		</action>
+
+		<action name="disableConfigProduct" class="smsConfigAction" method="disableConfig">
+			<result name="input" type="chain">querySmsConfigByProjectProduct</result>
+		</action>
+
+		<action name="querySentSMS" class="smsConfigAction" method="querySentSMS">
+			<result name="input">/office/smsmessages.jsp</result>
+		</action>
+		<action name="viewSMS" class="smsConfigAction" method="viewSMS">
+			<result name="input">/office/smsmessages.jsp</result>
+		</action>
+		<!-- query sent sms messages -->
+		<action name="querySentSMS" class="smsConfigAction" method="querySentSMS">
+			<result name="input">/office/smsmessages.jsp</result>
+		</action>
+
+		<action name="logout" class="smsConfigAction" method="logout">
+			<result name="input">/index.jsp</result>
+			<result name="success">/index.jsp</result>
+		</action>
+		<action name="login" class="smsConfigAction" method="login">
+			<result name="input">/index.jsp</result>
+			<result name="success">/office/menu.jsp</result>
+		</action>
+		<action name="addAccount" class="smsConfigAction" method="addAccount">
+			<result name="input">/office/account.jsp</result>
+			<result name="success">/office/account.jsp</result>
+		</action>
+		<action name="channelonesensitive" class="smsConfigAction" method="querychannelonesensitive">
+			<result name="success">/office/channelonesensitive.jsp</result>
+		</action>
+		<action name="updateAds" class="smsConfigAction" method="updateAds">
+			<result name="input" type="chain">channelonesensitive</result>
+		</action>
+		<action name="modifyPassword" class="smsConfigAction" method="modifyPassword">
+			<result name="input">/office/account.jsp</result>
+			<result name="success">/office/account.jsp</result>
+		</action>
+		<action name="cancelDisableSmsConfig" class="smsConfigAction" method="cancelDisableSmsConfig">
+			<result name="input" type="chain">querySmsConfigByProject</result>
+		</action>
+		<action name="viewSMSLog" class="smsLogsAction" method="viewSMSLog">
+			<result name="input">/office/smsLogs.jsp</result>
+		</action>
+		<action name="querySMSLogs" class="smsLogsAction" method="querySMSLogs">
+			<result name="input">/office/smsLogs.jsp</result>
+		</action>
+		<action name="notParticipateAutoSwitch" class="smsConfigAction" method="notParticipateAutoSwitch">
+			<result name="input" type="chain">querySmsConfigByProject</result>
+		</action>
+		<action name="checkNexmoMessage" class="smsConfigAction" method="checkNexmoMessage">
+			<result name="input">/office/checkNexmoMessage.jsp</result>
+		</action>
+		<action name="queryNexmoMessage" class="smsConfigAction" method="queryNexmoMessage">
+			<result name="input">/office/checkNexmoMessage.jsp</result>
+		</action>
+		<action name="checkNumberOfMessage" class="smsConfigAction" method="checkNumberOfMessage">
+			<result name="input">/office/checkNumberOfMessage.jsp</result>
+		</action>
+		<action name="queryNumberOfMessage" class="smsConfigAction" method="queryNumberOfMessage">
+			<result name="input">/office/checkNumberOfMessage.jsp</result>
+		</action>
+		<action name="querySumNumberOfMessage" class="smsConfigAction" method="querySumNumberOfMessage">
+			<result name="input">/office/checkNumberOfMessage.jsp</result>
+		</action>
+		<action name="configuringInformation" class="smsAsiarouteAction" method="configuringInformation">
+			<result name="input">/office/configurationInformation.jsp</result>
+		</action>
+		<action name="addSmsAsiarouteConfig" class="smsAsiarouteAction" method="addSmsAsiarouteConfig">
+			<result name="input">/office/configurationInformation.jsp</result>
+		</action>
+		<action name="querySmsServerConfigByProject" class="smsAsiarouteAction" method="querySmsServerConfigByProject">
+			<result name="input">/office/configurationInformation.jsp</result>
+		</action>
+		<action name="deleteSmsServerConfig" class="smsAsiarouteAction" method="deleteSmsServerConfig">
+			<result name="input" type="chain">querySmsServerConfigByProject</result>
+		</action>
+		<action name="updateSmsServerConfig" class="smsAsiarouteAction" method="updateSmsServerConfig">
+			<result name="input" type="chain">querySmsServerConfigByProject</result>
+		</action>
+	</package>
+	<package name="smsRecieve" namespace="/nexmo" extends="struts-default">
+		<action name="receiveMsgResponse" class="smsRecieveAction" method="receiveMsgResponse">
+			<result type="plainText"></result>
+		</action>
+	</package>
+</struts>	

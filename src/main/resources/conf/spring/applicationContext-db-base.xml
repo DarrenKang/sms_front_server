@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="dataSourceParent" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" dependency-check="none" abstract="true">
+        <property name="driverClass">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+        <property name="acquireIncrement">
+            <value>30</value>
+        </property>
+        <property name="initialPoolSize">
+            <value>100</value>
+        </property>
+        <property name="minPoolSize">
+            <value>100</value>
+        </property>
+        <property name="maxPoolSize">
+            <value>400</value>
+        </property>
+        <property name="maxIdleTime">
+            <value>300</value>
+        </property>
+        <property name="idleConnectionTestPeriod">
+            <value>150</value>
+        </property>
+        <property name="maxStatements">
+            <value>300</value>
+        </property>
+        <property name="maxStatementsPerConnection">
+            <value>300</value>
+        </property>
+        <property name="numHelperThreads">
+            <value>50</value>
+        </property>
+    </bean>
+
+    <bean id="sessionFactoryParent" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" abstract="true">
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">
+                    org.hibernate.dialect.MySQLInnoDBDialect
+                </prop>
+                <prop key="hibernate.format_sql">
+                    false
+                </prop>
+                <prop key="hibernate.show_sql">
+                    false
+                </prop>
+                <prop key="hibernate.jdbc.fetch_size">
+                    50
+                </prop>
+                <prop key="hibernate.jdbc.batch_size">
+                    25
+                </prop>
+                <prop key="hibernate.connection.release_mode">
+                    after_transaction
+                </prop>
+                <prop key="hibernate.order_updates">
+                    true
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>
